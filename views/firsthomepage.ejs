@@ -18,6 +18,9 @@
 	<div id='upmostHeader'>
 		<button id='upmostHeaderButton1'>Settings</button>
 		<button id='upmostHeaderButton3'>Daises</button>
+		<form action="" class="headForm">
+			<input type="text" id="headerInput" value="search for more">
+		</form>
 	</div>
 
    
@@ -42,8 +45,8 @@
 	   <input type="text" id="hiddenFieldForm" style="display: none;">
     </form>
 	<p style="display: none;" id="hiddenAlways"></p>
-	<div class="singleSection" style="width: 100%; background-color: #1d353e;">
-		 <p id='amountOfData' style="padding-top: 20px; font-weight: bold; margin-top: 70px; padding-left: 30%; color: white; background-color: #1d353e;"></p>
+	<div class="singleSection" style="width: 100%;">
+		 <p id='amountOfData' style="padding-top: 20px; font-weight: bold; margin-top: 70px; padding-left: 30%; color: white;"></p>
 		 <div class="noResultSetFound"><p id="noResultSetFound"></p><p>now lets do it again!</p></div>
 	</div>
 
@@ -134,18 +137,35 @@
 		 });
          
          $('#onlineButton').click(function(){
-             document.getElementById('onlineButton').style.backgroundColor = 'green';
-             document.getElementById('onlineButton').style.color = 'white';
-             document.getElementById('onlineButton').style.border = 'none';
+         	 var color = document.getElementById('onlineButton').style.backgroundColor;
+         	 if(color == 'white'){
+                  document.getElementById('onlineButton').style.backgroundColor = 'green';
+                  document.getElementById('onlineButton').style.color = 'white';
+                  document.getElementById('onlineButton').style.border = '1px solid black';
+         	 }else{
+                  document.getElementById('onlineButton').style.backgroundColor = 'white';
+                  document.getElementById('onlineButton').style.color = 'green';
+                  document.getElementById('onlineButton').style.border = '1px solid black';
+         	 }
+
              document.getElementById('offlineButton').style.backgroundColor = 'white';
              document.getElementById('offlineButton').style.border = '1px solid black';
              document.getElementById('offlineButton').style.color = 'red';
          });
 
          $('#offlineButton').click(function(){
-             document.getElementById('offlineButton').style.backgroundColor = 'green';
-             document.getElementById('offlineButton').style.color = 'white';
-             document.getElementById('offlineButton').style.border = 'none';
+         	 var color = document.getElementById('offlineButton').style.backgroundColor;
+
+             if(color == "white"){
+                 document.getElementById('offlineButton').style.backgroundColor = 'green';
+                 document.getElementById('offlineButton').style.color = 'white';
+                 document.getElementById('offlineButton').style.border = '1px solid black';
+             }else{
+             	 document.getElementById('offlineButton').style.backgroundColor = 'white';
+                 document.getElementById('offlineButton').style.color = 'red';
+                 document.getElementById('offlineButton').style.border = '1px solid black';
+             }
+
              document.getElementById('onlineButton').style.backgroundColor = 'white';
              document.getElementById('onlineButton').style.border = '1px solid black';
              document.getElementById('onlineButton').style.color = 'green';
@@ -300,7 +320,132 @@
  * something new stated here
  * @param  {String}
  * @return {[type]}
- */
+ *
+ *    
+ */ 
+
+       $('.headForm').hide();
+       $('.headForm').keyup(function(event){
+       	      //document.getElementById('lovedaisesHeading').style.marginTop = "10px";
+       	      //document.getElementsByClassName('homeSearch')[0].style.width = "98%";
+       	      //document.getElementsByClassName('homeSearch')[0].style.marginLeft = "1%";
+       	      //document.getElementsByClassName('homeSearch')[0].style.backgroundColor = "black";
+       	      //document.getElementsByClassName('homeSearch')[0].style.color = "white";
+        	  $('.SearchHintp').hide();
+        	  var searchQuery = document.getElementById('headerInput').value;
+        	  var theType = typeof searchQuery;
+        	  if(theType == 'number') theType = 'number';
+        	  if(searchQuery == '' || theType == 'number') return;
+        	  var value = document.getElementById('hiddenFieldForm').value;
+
+              $.ajax({
+			        url: "http://127.0.0.1:8000/homepageSearchQuery",
+			        type: 'POST',
+			        data: JSON.stringify({'searchQuery': searchQuery, 'hiddenFieldForm': value}),
+                    crossDomain: true,
+			        async: true,
+			        cache: false,
+			        contentType: "application/json; charset=utf-8",
+			        processData: false,
+			        success: function (data) {
+			        	console.log(data);
+			        	var arrayData = [];
+			        	var onlineCounter = 0;
+			            var onlineCounter1 = 0;
+			            var offlineCounter = 0;
+			            var offlineCounter1 = 0;
+			        	if(data.message == 'No Result Found!'){
+			        		var searchHint = "No Result, Continue Searching!";
+			        		showHint(searchHint);
+			        		return
+			        	};
+
+			            if(data.online != "" && data.offline != ''){
+                              for(var i=0; i < data.online.length; i++){
+                              	   onlineCounter++;
+                                   arrayData.push(data.online[i].FirstName + ' ' + data.online[i].LastName);
+                                   arrayData.push(data.online[i].Daises);
+                                   if(onlineCounter == data.online.length){
+                                        // do something
+                                        break;
+                                   }
+                              }
+
+                              for(var i=0; i < data.offline.length; i++){
+                              	   offlineCounter++;
+                                   arrayData.push(data.offline[i].FirstName + ' ' + data.offline[i].LastName);
+                                   arrayData.push(data.offline[i].Daises);
+                                   if(offlineCounter == data.offline.length){
+                                   	    setTimeout(function(){
+                                   	    	showHint(arrayData);
+                                   	    },50);
+                                        return;
+                                   }
+                              }
+			            }
+
+			            if(data.online == "" && data.offline >= 1){
+                                   for(var i=0; i < data.online.length; i++){
+                                   	    offlineCounter1++;
+                                   	    //console.log('was this function called! ' +  );
+                                        arrayData.push(data.offline[i].FirstName + ' ' + data.offline[i].LastName); 
+                                        arrayData.push(data.offline[i].Daises);
+                                        if(offlineCounter1 == data.online.length){
+                                        	//console.log('was this function called!');
+                                            showHint(arrayData);
+                                        }
+                                   }
+			            }
+			            if(data.online != "" && data.offline == ''){
+                                   console.log('was this function called!');
+                                   for(var i=0; i < data.online.length; i++){
+                                   	console.log('was this function called!22');
+                                   	   onlineCounter1++;
+                                       arrayData.push(data.online[i].FirstName + ' ' + data.online[i].LastName);
+                                       arrayData.push(data.online[i].Daises);
+                                       if(onlineCounter1 == data.online.length){
+                                       	    console.log('Code block Entered!');
+                                            showHint(arrayData);
+                                       }
+                                   }
+			            }
+
+			            function showHint(searchHint){
+				            	if(searchHint == 'No Result, Continue Searching!'){
+				                    var generatedHTML = "<p class='SearchHintp'>No Result, Continue Searching!<br><br>Search with key words!</p>";
+				                    $(generatedHTML).insertBefore('#SearchHint');
+				                     $('.SearchHint').show();
+				                     return;
+				            	}
+				                console.log(searchHint);
+				                console.log('that is search hint above');
+				            	var searchCounter = 0;
+				            	//var uniqueId = abac;
+				            	for(var i=0; i < searchHint.length; i++){
+				            	    searchCounter++;
+				                    var generatedHTML = "<p class='SearchHintp' onclick='displayingFoundDaisesFinal(this)' data-val='" + searchHint[i] + "' style='color: black; text-decoration: none; width: 100%;'>" + searchHint[i] + "</p>";
+
+
+				                    /**
+				                     * var generatedHTML = "<p class='SearchHintp'><a href='http://127.0.0.1:9000/homepageSearchQuery/" + searchHint[i] + "'" + " style='color: black; text-decoration: none; width: 100%; background-color: transparent;'>" + searchHint[i] + "</a></p>";
+				                     */
+				                   // var generatedHTML = "<p onload='setOnlisterner()' class='SearchHintp'>" + searchHint[i] + "</p>";
+				                   //var generatedHTML = "<a href='http://127.0.0.1:9000/homepageSearchQuery/" + searchHint[i] + "'" + ' ' + " style='' class='SearchHintp'>" + searchHint[i] + "</a><br>";
+				                    $(generatedHTML).insertBefore('#SearchHint');
+				                    if(searchCounter == searchHint.length){
+				                         $('.SearchHint').show();
+				                         return;
+				                    }
+				                }
+			            }	            
+			        },
+			        error: function(data){
+                        alert("Please Check your server! <br> something is wrong!");
+			        }
+			       
+			    });
+        });
+       
        $('#headerForm').keyup(function(event){
        	      document.getElementById('lovedaisesHeading').style.marginTop = "10px";
        	      document.getElementsByClassName('homeSearch')[0].style.width = "98%";
@@ -430,7 +575,11 @@
 
 
         function displayingFoundDaisesFinal(pElement){
-              // Ajax
+           
+              $('.headForm').show();
+              $('.SearchHint').hide();
+              $('#headerForm').hide();
+              //document.getElementById();
               var searchValue = pElement.getAttribute("data-val")
               console.log(searchValue);
               //console.log(pElement);

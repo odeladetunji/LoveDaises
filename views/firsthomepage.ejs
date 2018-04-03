@@ -22,7 +22,7 @@
 			<input type="text" id="headerInput" value="search for more">
 		</form>
 	</div>
-
+   
    
 	<!-- this hidden p element is used to imidiately set a value 
 	for ajax Call to get the search result from the server!-->
@@ -325,13 +325,13 @@
  */ 
 
        $('.headForm').hide();
-       $('.headForm').keyup(function(event){
+      /* $('.headForm').keyup(function(event){
        	      //document.getElementById('lovedaisesHeading').style.marginTop = "10px";
        	      //document.getElementsByClassName('homeSearch')[0].style.width = "98%";
        	      //document.getElementsByClassName('homeSearch')[0].style.marginLeft = "1%";
        	      //document.getElementsByClassName('homeSearch')[0].style.backgroundColor = "black";
        	      //document.getElementsByClassName('homeSearch')[0].style.color = "white";
-        	  $('.SearchHintp').hide();
+        	 // $('.SearchHintp').hide();
         	  var searchQuery = document.getElementById('headerInput').value;
         	  var theType = typeof searchQuery;
         	  if(theType == 'number') theType = 'number';
@@ -431,7 +431,7 @@
 				                     */
 				                   // var generatedHTML = "<p onload='setOnlisterner()' class='SearchHintp'>" + searchHint[i] + "</p>";
 				                   //var generatedHTML = "<a href='http://127.0.0.1:9000/homepageSearchQuery/" + searchHint[i] + "'" + ' ' + " style='' class='SearchHintp'>" + searchHint[i] + "</a><br>";
-				                    $(generatedHTML).insertBefore('#SearchHint');
+				/*                    $(generatedHTML).insertBefore('#SearchHint');
 				                    if(searchCounter == searchHint.length){
 				                         $('.SearchHint').show();
 				                         return;
@@ -444,7 +444,7 @@
 			        }
 			       
 			    });
-        });
+        });*/
        
        $('#headerForm').keyup(function(event){
        	      document.getElementById('lovedaisesHeading').style.marginTop = "10px";
@@ -551,13 +551,7 @@
 				            	for(var i=0; i < searchHint.length; i++){
 				            	    searchCounter++;
 				                    var generatedHTML = "<p class='SearchHintp' onclick='displayingFoundDaisesFinal(this)' data-val='" + searchHint[i] + "' style='color: black; text-decoration: none; width: 100%;'>" + searchHint[i] + "</p>";
-
-
-				                    /**
-				                     * var generatedHTML = "<p class='SearchHintp'><a href='http://127.0.0.1:9000/homepageSearchQuery/" + searchHint[i] + "'" + " style='color: black; text-decoration: none; width: 100%; background-color: transparent;'>" + searchHint[i] + "</a></p>";
-				                     */
-				                   // var generatedHTML = "<p onload='setOnlisterner()' class='SearchHintp'>" + searchHint[i] + "</p>";
-				                   //var generatedHTML = "<a href='http://127.0.0.1:9000/homepageSearchQuery/" + searchHint[i] + "'" + ' ' + " style='' class='SearchHintp'>" + searchHint[i] + "</a><br>";
+				                    
 				                    $(generatedHTML).insertBefore('#SearchHint');
 				                    if(searchCounter == searchHint.length){
 				                         $('.SearchHint').show();
@@ -576,9 +570,9 @@
 
         function displayingFoundDaisesFinal(pElement){
            
-              $('.headForm').show();
-              $('.SearchHint').hide();
-              $('#headerForm').hide();
+              //$('.headForm').show();
+              //$('.SearchHint').hide();
+             // $('#headerForm').hide();
               //document.getElementById();
               var searchValue = pElement.getAttribute("data-val")
               console.log(searchValue);

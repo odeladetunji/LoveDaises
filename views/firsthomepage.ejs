@@ -26,6 +26,7 @@
    
 	<!-- this hidden p element is used to imidiately set a value 
 	for ajax Call to get the search result from the server!-->
+
     <div class="searchFilter">
     	<p>Search Filter</p>
     	<ul>
@@ -748,7 +749,7 @@
 		                  //rateUniqueId = value;
 		                  
 		     			   $.ajax({
-					        url: "http://127.0.0.1:8080/gettingRating",
+					        url: "http://127.0.0.1:8000/gettingRating",
 					        type: 'POST',
 					        data: JSON.stringify({ sentData: value }),
 		                    crossDomain: true,
@@ -823,7 +824,7 @@
    	               var value = value;
  	       console.log(value + "   .............................");
          			   $.ajax({
-				        url: "http://127.0.0.1:8080/gettingRatingsOfClosePeople",
+				        url: "http://127.0.0.1:8000/gettingRatingsOfClosePeople",
 				        type: 'POST',
 				        data: JSON.stringify({sentData: value}),
                         crossDomain: true,

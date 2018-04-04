@@ -32,6 +32,13 @@
     		<li><button style="color: green;" id="onlineButton">Online</button></li>
     		<li><button style="color: red;" id="offlineButton">offline</button></li>
     	</ul>
+    	 <select name="statusTag" class='search1' style="border: none; background-color: white;">
+             <option value="beloved">Please Select Type of Search!!!</option>
+             <option value="beloved">filter by Beloved</option>
+             <option value="saviour">filter by Savours</option>
+             <option value="Professional">filter by Professional</option>
+         </select>
+         <p style="color: red; margin-top: 5px;">Please Select Type of Search!</p>
     </div>
 
     <p id="lovedaisesHeading">LoveDaises</p>
@@ -40,6 +47,7 @@
 	   <input type="text" class="homeSearch searchDaises" value="Search For Services OR Get Help">
 	   	<div>
 		     <% include ./partials/SearchHint %>
+		     <% include ./partials/SearchWarning %>
 	    </div>
 	   <p id="subCaption">Recieve or Give Anything for Free || Also Hire A Professional</p>
 	   <input type="text" id="hiddenFieldForm" style="display: none;">
@@ -125,7 +133,8 @@
 </div>
 <script type="application/javascript">
 	
-           
+         var onlineSearchFilter, offlineSearchFilter, onlineSwitch, offlineSwitch;
+
 		 $('#upmostHeaderButton1').click(function(){
 		 	 console.log("this function triggered");
 		 	 $('.goingToSettings').submit();
@@ -142,10 +151,15 @@
                   document.getElementById('onlineButton').style.backgroundColor = 'green';
                   document.getElementById('onlineButton').style.color = 'white';
                   document.getElementById('onlineButton').style.border = '1px solid black';
+                  onlineSearchFilter = "green";
+                  onlineSwitch = "on";
+
          	 }else{
                   document.getElementById('onlineButton').style.backgroundColor = 'white';
                   document.getElementById('onlineButton').style.color = 'green';
                   document.getElementById('onlineButton').style.border = '1px solid black';
+                  onlineSearchFilter = "white";
+                  onlineSwitch = "off";
          	 }
 
              document.getElementById('offlineButton').style.backgroundColor = 'white';
@@ -160,10 +174,14 @@
                  document.getElementById('offlineButton').style.backgroundColor = 'green';
                  document.getElementById('offlineButton').style.color = 'white';
                  document.getElementById('offlineButton').style.border = '1px solid black';
+                 offlineSearchFilter = "green";
+                 offlineSwitch = 'on';
              }else{
              	 document.getElementById('offlineButton').style.backgroundColor = 'white';
                  document.getElementById('offlineButton').style.color = 'red';
                  document.getElementById('offlineButton').style.border = '1px solid black';
+                 offlineSearchFilter = "white";
+                 offlineSwitch = 'off';
              }
 
              document.getElementById('onlineButton').style.backgroundColor = 'white';
@@ -447,6 +465,16 @@
         });*/
        
        $('#headerForm').keyup(function(event){
+       	      var warnmsg = document.getElementsByClassName('search1')[0].value;
+       	      console.log(warnmsg);
+       	      console.log("thats the value above");
+       	      if(warnmsg == "Please Select Type of Search!!!"){
+       	      	 $('search1').show();
+       	      	 setTimeout(function(){
+                    $('search1').hide();
+       	      	 }, 1000);
+       	      	 return;
+       	      }
        	      document.getElementById('lovedaisesHeading').style.marginTop = "10px";
        	      document.getElementsByClassName('homeSearch')[0].style.width = "98%";
        	      document.getElementsByClassName('homeSearch')[0].style.marginLeft = "1%";
@@ -511,13 +539,14 @@
                               }
 			            }
 
-			            if(data.online == "" && data.offline >= 1){
-                                   for(var i=0; i < data.online.length; i++){
+			            if(data.online == "" && data.offline.length >= 1){
+                                   for(var i=0; i < data.offline.length; i++){
+                                   	    console.log("this function never ran");
                                    	    offlineCounter1++;
                                    	    //console.log('was this function called! ' +  );
                                         arrayData.push(data.offline[i].FirstName + ' ' + data.offline[i].LastName); 
                                         arrayData.push(data.offline[i].Daises);
-                                        if(offlineCounter1 == data.online.length){
+                                        if(offlineCounter1 == data.offline.length){
                                         	//console.log('was this function called!');
                                             showHint(arrayData);
                                         }
@@ -551,7 +580,7 @@
 				            	for(var i=0; i < searchHint.length; i++){
 				            	    searchCounter++;
 				                    var generatedHTML = "<p class='SearchHintp' onclick='displayingFoundDaisesFinal(this)' data-val='" + searchHint[i] + "' style='color: black; text-decoration: none; width: 100%;'>" + searchHint[i] + "</p>";
-				                    
+
 				                    $(generatedHTML).insertBefore('#SearchHint');
 				                    if(searchCounter == searchHint.length){
 				                         $('.SearchHint').show();
@@ -567,14 +596,14 @@
 			    });
         });
 
-
+        
         function displayingFoundDaisesFinal(pElement){
            
               //$('.headForm').show();
               //$('.SearchHint').hide();
-             // $('#headerForm').hide();
+              //$('#headerForm').hide();
               //document.getElementById();
-              var searchValue = pElement.getAttribute("data-val")
+              var searchValue = pElement.getAttribute("data-val");
               console.log(searchValue);
               //console.log(pElement);
 
@@ -609,6 +638,10 @@
                          return;
 		        	}
 		        	if(data.online != '' && data.offline != ''){
+		        		  if(onlineSwitch == "on" || offlineSwitch == "on"){
+                               return;
+		        		  }
+
 		        		  document.getElementById('amountOfData1').innerHTML = 'people found Online';
 		        		  $('.outerCovergenerated').hide();
                           for(var i=0; i < data.online.length; i++){
@@ -643,6 +676,11 @@
 		        	}
 
 		        	if(data.online != '' && data.offline == ''){
+		        		 if(offlineSwitch == 'on'){
+
+                             return;
+		        		 }
+
 		        		 $('.outerCovergenerated').hide();
 		        		 $('#amountOfData').show();
                          for(var i=0; i < data.online.length; i++){
@@ -663,6 +701,10 @@
 		        	}
 
 		        	if(data.online == '' && data.offline != ''){
+		        		 if(onlineSwitch == 'on'){
+		        		 	return;
+		        		 }
+
 		        		 $('.outerCovergenerated').hide();
 		        		 $('#amountOfData').show();
                          for(var i=0; i < data.offline.length; i++){

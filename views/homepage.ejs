@@ -11,6 +11,7 @@
        <!-- <sript type='text/javascript' src="http://yibsajae.website:81/socket.io/socket.io.js"></script>-->
     <script src="/JavaScript/jquery-3.2.1.min(first).js"></script>
    <link rel="stylesheet" type="text/css" href="/StyleSheets/ratingModalForm1.css">
+   <link rel="stylesheet" type="text/css" href="/StyleSheets/rateFinal.css">
     <link rel="stylesheet" type="text/css" href="/StyleSheets/inbox.css">
 	<link rel="stylesheet" type="text/css" href="/StyleSheets/pictureModal.css">
     <link rel="stylesheet" type="text/css" href="/StyleSheets/Discursion.css">
@@ -472,19 +473,8 @@
     </div>
 
 	</div>
-    
-     <div style=" padding-top: 20px; padding-bottom: 20px; width: 100%; z-index: 5; top: 0px; position: fixed; background-color: black;">
-     	<div class="flex-container" style="margin-left: 25%; background-color: white;  width: 50%; display: flex; flex-wrap: nowrap;">
-		     	<div class="imgDiv" style="width: 30%; margin-left: 10%;">
-		     		<img src="/Images/Apple(Love).jpg" alt="" style="width: 100%;">
-		     	</div>
-		     	<div class="discDiv" style="width: 30%;">
-		     		<p style="width: 100%; margin-top: 35%; text-align: center;">Apple(Love)</p>
-		     	</div>
-		     	<div class="rateDiv" style="width: 30%;">
-		     		<input type="number" min="10" max="100" style=" float: right; padding: 10px; margin-top: 35%;; border-radius: 5px; border: 1px solid black; margin-right: 50%;" value="10">
-		     	</div>
-        </div>
+     <div>
+     	 <% include ./partials/ratingFinal %>
      </div>
 
 	<div class="ratingModalForm1" id="ratingModalForm1">

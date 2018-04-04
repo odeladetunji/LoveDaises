@@ -1,0 +1,55 @@
+.parentForRate {
+	padding-top: 20px; 
+	padding-bottom: 20px; 
+	width: 100%; 
+	z-index: 5; 
+	top: 0px; 
+	position: fixed; 
+	background-color: black;
+}
+
+.flexContainerRating {
+	margin-left: 25%; 
+	background-color: white;  
+	width: 50%; 
+	display: flex; 
+	flex-wrap: nowrap;
+}
+
+.imgDiv {
+	width: 30%; 
+	margin-left: 7%;
+}
+
+.imgDiv img {
+	width: 80%;
+	float: right;
+}
+
+.discDiv {
+	width: 30%;
+}
+
+.virInputRate {
+	width: 100%; 
+	margin-top: 25%; 
+	text-align: center;
+}
+
+.rateDiv {
+	width: 30%;
+}
+
+.numberInputRate {
+	float: right; 
+	padding: 10px; 
+	margin-top: 25%; 
+	border-radius: 5px; 
+	border: 1px solid black; 
+	margin-right: 50%;
+}
+
+
+
+
+

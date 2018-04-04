@@ -33,12 +33,12 @@
     		<li><button style="color: red;" id="offlineButton">offline</button></li>
     	</ul>
     	 <select name="statusTag" class='search1' style="border: none; background-color: white;">
-             <option value="beloved">Please Select Type of Search!!!</option>
-             <option value="beloved">filter by Beloved</option>
-             <option value="saviour">filter by Savours</option>
-             <option value="Professional">filter by Professional</option>
+             <option value="Please Select Type of Search!!!">Please Select Type of Search!!!</option>
+             <option value="filter by Beloved">filter by Beloved</option>
+             <option value="filter by Savours">filter by Savours</option>
+             <option value="filter by Professional">filter by Professional</option>
          </select>
-         <p style="color: red; margin-top: 5px;">Please Select Type of Search!</p>
+         <p style="color: red; margin-top: 5px; display: none;" id="warnmsg1">Please Select Type of Search!</p>
     </div>
 
     <p id="lovedaisesHeading">LoveDaises</p>
@@ -52,6 +52,15 @@
 	   <p id="subCaption">Recieve or Give Anything for Free || Also Hire A Professional</p>
 	   <input type="text" id="hiddenFieldForm" style="display: none;">
     </form>
+
+    <div class="navigationDynamic">
+    	<div>
+    		<img src="" alt="">
+    	</div>
+    	<i class="fa fa-video-camera" id="videoCameraIcon"></i><br>
+    	<i class="fa fa-comments" id="chatIcon"></i><br>
+    	<i class="fa fa-envelope-open" id="envelopeIcon"></i>
+    </div>
 	<p style="display: none;" id="hiddenAlways"></p>
 	<div class="singleSection" style="width: 100%;">
 		 <p id='amountOfData' style="padding-top: 20px; font-weight: bold; margin-top: 70px; padding-left: 30%; color: white;"></p>
@@ -465,14 +474,17 @@
         });*/
        
        $('#headerForm').keyup(function(event){
+       	      $('.navigationDynamic').css("left", '93%');
        	      var warnmsg = document.getElementsByClassName('search1')[0].value;
        	      console.log(warnmsg);
        	      console.log("thats the value above");
        	      if(warnmsg == "Please Select Type of Search!!!"){
-       	      	 $('search1').show();
+       	      	 $('#warnmsg1').show();
+       	      	  document.getElementsByClassName('search1')[0].style.border = '1px solid red';
        	      	 setTimeout(function(){
-                    $('search1').hide();
-       	      	 }, 1000);
+                    $('#warnmsg1').hide();
+                    document.getElementsByClassName('search1')[0].style.border = 'none';
+       	      	 }, 300);
        	      	 return;
        	      }
        	      document.getElementById('lovedaisesHeading').style.marginTop = "10px";
